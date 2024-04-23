@@ -19,6 +19,7 @@ with open('language_dump_backup.json', 'w', encoding='utf-8') as f:
 
 # flag for updating
 newStringsAdded = False
+translationChanged = False
 # parse folder and subfolders
 for folder in os.walk(os.path.join(os.getcwd())):
     # filer non xlsx files
@@ -70,13 +71,10 @@ for folder in os.walk(os.path.join(os.getcwd())):
             # check if I changed something
             if ru != language_dump[key]['ru'] and language_dump[key]['ru'] != '':
                 fileWasChanged = True
+                translationChanged = True
                 print('found change for', key + ':', f"\"{ru.replace('\n',' ')}\"", '=>', f"\"{language_dump[key]['ru'].replace('\n',' ')}\"")
                 # update
                 ws.cell(row, COLUMN_RU).value = language_dump[key]['ru']
-            # remove ඞ if needed
-            #fileWasChanged = True
-            #if ru.startswith('ඞ'):
-            #    ru = ru[1:]
             row += 1
             # check if there was change in en localization
             #continue
@@ -96,6 +94,23 @@ for folder in os.walk(os.path.join(os.getcwd())):
             print('no changes found')
         wb.close()
 print('done')
+if translationChanged:
+    wb = openpyxl.load_workbook(os.getcwd() + "\\Upload\\rulocalization.xlsx")
+    ws = wb.worksheets[0]
+    ws.cell(1,1).value = 'Key'
+    ws.cell(1,2).value = 'Русский'
+    for key in language_dump:
+        if key == 'localization_file_list':
+            continue
+        # remove ඞ for upload
+        ru = language_dump[key]['ru']
+        if not ru:
+            ru = ""
+        if ru.startswith('ඞ'):
+            ru = ru[1:]
+        ws.append([key,ru])
+    print('saved changes')
+
 if newStringsAdded:
     # update dump if there was anything new
     with open('language_dump.json', 'w', encoding='utf-8') as f:
