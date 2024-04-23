@@ -1,4 +1,6 @@
 import os, openpyxl, warnings, json
+
+import openpyxl.workbook
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 """
@@ -19,7 +21,6 @@ with open('language_dump_backup.json', 'w', encoding='utf-8') as f:
 
 # flag for updating
 newStringsAdded = False
-translationChanged = False
 # parse folder and subfolders
 for folder in os.walk(os.path.join(os.getcwd())):
     # filer non xlsx files
@@ -94,22 +95,6 @@ for folder in os.walk(os.path.join(os.getcwd())):
             print('no changes found')
         wb.close()
 print('done')
-if translationChanged:
-    wb = openpyxl.load_workbook(os.getcwd() + "\\Upload\\rulocalization.xlsx")
-    ws = wb.worksheets[0]
-    ws.cell(1,1).value = 'Key'
-    ws.cell(1,2).value = 'Русский'
-    for key in language_dump:
-        if key == 'localization_file_list':
-            continue
-        # remove ඞ for upload
-        ru = language_dump[key]['ru']
-        if not ru:
-            ru = ""
-        if ru.startswith('ඞ'):
-            ru = ru[1:]
-        ws.append([key,ru])
-    print('saved changes')
 
 if newStringsAdded:
     # update dump if there was anything new

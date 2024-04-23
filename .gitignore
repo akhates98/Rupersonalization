@@ -1,13 +1,9 @@
 # Ignore everything
 *.txt
 build_info
-*.zip
-all-in-one.json
-language_dump2.json
-language_dump_backup.json
-language_dump_old.json
-*.wav
 Voice/
+*.wav
 UnityServicesProjectConfiguration.json
+language_dump_backup.json
 restore.py
-Uploader
+Upload/
