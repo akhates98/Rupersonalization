@@ -1,6 +1,9 @@
 # Ignore everything
-*
-# But not these files...
-!.gitignore
-!language_dump.json
-!rulocalization.py
+*.txt
+build_info
+*.zip
+all-in-one.json
+language_dump2.json
+language_dump_backup.json
+language_dump_old.json
+*.wav
