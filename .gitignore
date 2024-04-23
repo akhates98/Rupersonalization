@@ -8,3 +8,5 @@ language_dump_backup.json
 language_dump_old.json
 *.wav
 Voice/
+UnityServicesProjectConfiguration.json
+restore.py
