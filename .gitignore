@@ -7,3 +7,4 @@ language_dump2.json
 language_dump_backup.json
 language_dump_old.json
 *.wav
+Voice/
