@@ -73,6 +73,10 @@ for folder in os.walk(os.path.join(os.getcwd())):
                 print('found change for', key + ':', f"\"{ru.replace('\n',' ')}\"", '=>', f"\"{language_dump[key]['ru'].replace('\n',' ')}\"")
                 # update
                 ws.cell(row, COLUMN_RU).value = language_dump[key]['ru']
+            # remove ඞ if needed
+            #fileWasChanged = True
+            #if ru.startswith('ඞ'):
+            #    ru = ru[1:]
             row += 1
             # check if there was change in en localization
             #continue
@@ -87,6 +91,7 @@ for folder in os.walk(os.path.join(os.getcwd())):
         # save changes
         if fileWasChanged:
             wb.save(fullpath)
+            print('saved changes found')
         else:
             print('no changes found')
         wb.close()
