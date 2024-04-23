@@ -1,0 +1,6 @@
+# Ignore everything
+*
+# But not these files...
+!.gitignore
+!language_dump.json
+!rulocalization.py
