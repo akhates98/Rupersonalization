@@ -43,8 +43,6 @@
             "Localization_PlayerMessage.xlsx"
         ],
         "ignore": [
-            "Localization_【测试】终北的追忆.xlsx",
-            "Localization_Editor.xlsx",
             "Localization_ru.xlsx"
         ]
     }

@@ -68,8 +68,6 @@ for folder in os.walk(os.path.join(os.getcwd())):
             settings['localization_file_list']['files'].append(t)
         # iterate over rows starting with second one
         for key, cn, en, *values in ws.iter_rows(min_row=2, values_only=True):
-            if 'cn' not in localization[key]:
-                localization[key]['cn'] = cn
             # check if not empty string
             if key == None:
                 continue
