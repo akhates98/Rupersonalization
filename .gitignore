@@ -4,6 +4,8 @@ build_info
 Voice/
 *.wav
 UnityServicesProjectConfiguration.json
-language_dump_backup.json
+.xlsx
+!Localization_ru.xlsx
+localization_backup.json
 restore.py
-Upload/
+Uploader

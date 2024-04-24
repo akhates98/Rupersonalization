@@ -13,12 +13,38 @@ if os.getcwd().split('\\')[-1] != 'StreamingAssets':
     print('blyat')
     exit()
 
+# load files
 COLUMN_RU = 8
-with open("language_dump.json", encoding='utf8') as f:
-    language_dump = json.load(f)
-with open('language_dump_backup.json', 'w', encoding='utf-8') as f:
-    json.dump(language_dump, f, ensure_ascii=False)
+with open("localization.json", encoding='utf8') as f:
+    localization = json.load(f)
+with open('localization_backup.json', 'w', encoding='utf-8') as f:
+    json.dump(localization, f, ensure_ascii=False)
+with open("settings.json", encoding='utf8') as f:
+    settings = json.load(f)
 
+# function to update files
+def save_changes(isUpload=False):
+    path = os.getcwd()
+    wb = openpyxl.Workbook()
+    ws = wb.create_sheet('Localization_ru')
+    del wb['Sheet']
+    ws.append(['Key','Русский'])
+    for k in localization:
+        ru = localization[k]['ru']
+        # cleanup for upload
+        if isUpload:
+            if ru and ru.startswith('ඞ'):
+                ru = ru[1:]
+            ws.append([k,ru])
+        else:
+            ws.append([k,localization[k]['ru']])
+    if isUpload:
+        wb.save(path + '\\Upload\\Localization_ru.xlsx')
+    else:
+        wb.save(path + '\\OtherLocalization\\Localization_ru.xlsx')
+    wb.close()
+
+print('starting parsing')
 # flag for updating
 newStringsAdded = False
 # parse folder and subfolders
@@ -28,75 +54,58 @@ for folder in os.walk(os.path.join(os.getcwd())):
     path = folder[0]
     # for each file
     for t in tables:
-        if t in language_dump['localization_file_list']['ignore']:
+        if t in settings['localization_file_list']['ignore']:
             continue
         print('checking',t)
-        fileWasChanged = False
         # load it
         fullpath = path + "\\" + t
         wb = openpyxl.load_workbook(fullpath)
         ws = wb.worksheets[0]
         # check if file is new
-        if t not in language_dump['localization_file_list']['files']:
+        if t not in settings['localization_file_list']['files']:
             newStringsAdded = True
             print('found new file: ', t)
-            language_dump['localization_file_list']['files'].append(t)
-            ws.cell(row=1,column=COLUMN_RU).value = 'Русский'
-        # check if file was changed
-        if ws.cell(row=1,column=COLUMN_RU).value != 'Русский':
-            ws.cell(row=1,column=COLUMN_RU).value = 'Русский'
+            settings['localization_file_list']['files'].append(t)
         # iterate over rows starting with second one
-        row = 2
-        for key, cn, en, tcn, jp, kr, pt, ru, *values in ws.iter_rows(min_row=2, values_only=True):
+        for key, cn, en, *values in ws.iter_rows(min_row=2, values_only=True):
+            if 'cn' not in localization[key]:
+                localization[key]['cn'] = cn
             # check if not empty string
             if key == None:
                 continue
             if en == None:
                 en = ''
-            if ru == None:
-                ru = ''
             # check if it's new string
-            if key not in language_dump:
+            if key not in localization:
                 newStringsAdded = True
                 print('new string: ', t, key)
-                language_dump[key] = {'files':[t],'en':en,'ru':''}
-            if language_dump[key]['en'] == None:
-                language_dump[key]['en'] = ''
-            if language_dump[key]['ru'] == None:
-                language_dump[key]['ru'] = ''
+                localization[key] = {'files':[t],'cn':cn,'en':en,'ru':''}
+            if localization[key]['en'] == None:
+                localization[key]['en'] = ''
             # check if same key suddenly not appeared elsewhere
-            if t not in language_dump[key]['files']:
+            if t not in localization[key]['files']:
                 newStringsAdded = True
                 print('string appeared in another file: ', t, key)
-                language_dump[key]['files'].append(t)
-            # check if I changed something
-            if ru != language_dump[key]['ru'] and language_dump[key]['ru'] != '':
-                fileWasChanged = True
-                translationChanged = True
-                print('found change for', key + ':', f"\"{ru.replace('\n',' ')}\"", '=>', f"\"{language_dump[key]['ru'].replace('\n',' ')}\"")
-                # update
-                ws.cell(row, COLUMN_RU).value = language_dump[key]['ru']
-            row += 1
+                localization[key]['files'].append(t)
             # check if there was change in en localization
+            # bug: files may have different values of one key, but so far seems that translation is consistent
             #continue
-            if en != language_dump[key]['en']:
-                # bug: files may have different values of one key, but so far seems that translation is consistent
+            if en != localization[key]['en']:
                 # doubles found:
                 if key in ('易爆', '造成伤害', '1c6757aa97eb2a367697479776b9c18c', 'b3e80b2a4ec3fec39b9da30eaa3bc7b2','c44fd5492e9c0dfee96d7750597aaea9','44d61c38b0812f79231192d9417056e1'):
                     continue
                 newStringsAdded = True
-                print('found change for', key + ':', f"\"{language_dump[key]['en'].replace('\n',' ')}\""), '=>', f"\"{en.replace('\n',' ')}\""
-                language_dump[key]['en'] = en
-        # save changes
-        if fileWasChanged:
-            wb.save(fullpath)
-            print('saved changes found')
-        else:
-            print('no changes found')
+                print('found change for', key + ':', f"\"{localization[key]['en'].replace('\n',' ')}\""), '=>', f"\"{en.replace('\n',' ')}\""
+                localization[key]['en'] = en
+        # close file
         wb.close()
 print('done')
-
 if newStringsAdded:
-    # update dump if there was anything new
-    with open('language_dump.json', 'w', encoding='utf-8') as f:
-        json.dump(language_dump, f, ensure_ascii=False)
+    # update file if there was anything new
+    with open('localization.json', 'w', encoding='utf-8') as f:
+        json.dump(localization, f, ensure_ascii=False)
+
+print('updating files')
+save_changes(isUpload=False)
+save_changes(isUpload=True)
+print('done')
