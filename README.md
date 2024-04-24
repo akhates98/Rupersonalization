@@ -4,4 +4,4 @@
 
 После установки мода через мастерскую, язык будет сбрасываться на китайский. Откройте настройки (вторая кнопка сверх) и переключайте верхную настройку вправо до русского языка.
 
-Чтобы поставить актуальную версию перевода скачайте .xlsx файл и вставьте в папку Depersonalization\Depersonalization-Release_Data\StreamingAssets\OtherLocalization\
+Чтобы поставить актуальную версию перевода скачайте Localization_ru.xlsx файл из папки Upload и вставьте в папку Depersonalization\Depersonalization-Release_Data\StreamingAssets\OtherLocalization\
