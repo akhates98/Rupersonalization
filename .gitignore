@@ -1,11 +1,12 @@
-# Ignore everything
+# Ignore game files
 *.txt
 build_info
 Voice/
 *.wav
 UnityServicesProjectConfiguration.json
+# and all .xlsx except ru one
 *.xlsx
 !Localization_ru.xlsx
+# and some other files 
 localization_backup.json
-restore.py
 Uploader
