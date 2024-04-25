@@ -46,12 +46,14 @@ for folder in os.walk(os.path.join(os.getcwd())):
             # check if not empty string
             if key == None:
                 continue
+            if cn == None:
+                cn = ''
             if en == None:
                 en = ''
             # check if it's new string
             if key not in localization:
                 newStringsAdded = True
-                print('new string: ', t, key)
+                print('new string: ', key)
                 localization[key] = {'files':[t],'cn':cn,'en':en,'ru':''}
             if localization[key]['en'] == None:
                 localization[key]['en'] = ''
