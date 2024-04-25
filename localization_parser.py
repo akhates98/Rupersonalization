@@ -70,6 +70,10 @@ for folder in os.walk(os.path.join(os.getcwd())):
                 newStringsAdded = True
                 print('found change for', key + ':', f"\"{localization[key]['en'].replace('\n',' ')}\""), '=>', f"\"{en.replace('\n',' ')}\""
                 localization[key]['en'] = en
+            if cn != localization[key]['cn']:
+                newStringsAdded = True
+                print('found change for', key + ':', f"\"{localization[key]['cn'].replace('\n',' ')}\""), '=>', f"\"{cn.replace('\n',' ')}\""
+                localization[key]['cn'] = cn
         # close file
         wb.close()
 
