@@ -70,11 +70,11 @@ for folder in os.walk(os.path.join(os.getcwd())):
                 if key in ('易爆', '造成伤害', '1c6757aa97eb2a367697479776b9c18c', 'b3e80b2a4ec3fec39b9da30eaa3bc7b2','c44fd5492e9c0dfee96d7750597aaea9','44d61c38b0812f79231192d9417056e1'):
                     continue
                 newStringsAdded = True
-                print('found change for', key + ':', f"\"{localization[key]['en'].replace('\n',' ')}\""), '=>', f"\"{en.replace('\n',' ')}\""
+                print('found change for', key + ':', f"\"{localization[key]['en'].replace('\n',' ')}\"", '=>', f"\"{en.replace('\n',' ')}\"")
                 localization[key]['en'] = en
             if cn != localization[key]['cn']:
                 newStringsAdded = True
-                print('found change for', key + ':', f"\"{localization[key]['cn'].replace('\n',' ')}\""), '=>', f"\"{cn.replace('\n',' ')}\""
+                print('found change for', key + ':', f"\"{localization[key]['cn'].replace('\n',' ')}\"", '=>', f"\"{cn.replace('\n',' ')}\"")
                 localization[key]['cn'] = cn
         # close file
         wb.close()
