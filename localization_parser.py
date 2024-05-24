@@ -21,10 +21,6 @@ with open('localization_backup.json', 'w', encoding='utf-8') as f:
 with open("settings.json", encoding='utf8') as f:
     settings = json.load(f)
 
-for k in localization:
-    if 'changed_since_last_update' not in localization[k]:
-        localization[k]['changed_since_last_update'] = True
-        localization[k]['last_update'] = current_version
 
 print('parsing files...')
 # flag for updating
