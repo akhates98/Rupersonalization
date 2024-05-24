@@ -4,6 +4,7 @@ build_info
 Voice/
 *.wav
 UnityServicesProjectConfiguration.json
+*.tmp
 # and all .xlsx except ru one
 *.xlsx
 !Localization_ru.xlsx

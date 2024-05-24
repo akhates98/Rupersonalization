@@ -6,6 +6,8 @@ Script to update localization file
 execute only in StreamingAssets folder!
 """
 
+current_version = '1.5.51'
+
 # check if right folder to run in
 if os.getcwd().split('\\')[-1] != 'StreamingAssets':
     print('blyat')
@@ -18,6 +20,11 @@ with open('localization_backup.json', 'w', encoding='utf-8') as f:
     json.dump(localization, f, ensure_ascii=False)
 with open("settings.json", encoding='utf8') as f:
     settings = json.load(f)
+
+for k in localization:
+    if 'changed_since_last_update' not in localization[k]:
+        localization[k]['changed_since_last_update'] = True
+        localization[k]['last_update'] = current_version
 
 print('parsing files...')
 # flag for updating
@@ -54,7 +61,12 @@ for folder in os.walk(os.path.join(os.getcwd())):
             if key not in localization:
                 newStringsAdded = True
                 print('new string: ', key)
-                localization[key] = {'files':[t],'cn':cn,'en':en,'ru':''}
+                localization[key] = {'files':[t],
+                                     'cn':cn,
+                                     'en':en,
+                                     'ru':'',
+                                     'changed_since_last_update': True,
+                                     'last_update': current_version}
             if localization[key]['en'] == None:
                 localization[key]['en'] = ''
             # check if same key suddenly not appeared elsewhere
@@ -72,7 +84,12 @@ for folder in os.walk(os.path.join(os.getcwd())):
                 newStringsAdded = True
                 print('found change for', key + ':', f"\"{localization[key]['en'].replace('\n',' ')}\"", '=>', f"\"{en.replace('\n',' ')}\"")
                 localization[key]['en'] = en
+                localization[key]['changed_since_last_update'] = True
+                localization[key]['last_update'] = current_version
             if cn != localization[key]['cn']:
+                # doubles found:
+                if key in ('c1e1384d2724ca737c3384011fe9179a'):
+                    continue
                 newStringsAdded = True
                 print('found change for', key + ':', f"\"{localization[key]['cn'].replace('\n',' ')}\"", '=>', f"\"{cn.replace('\n',' ')}\"")
                 localization[key]['cn'] = cn
