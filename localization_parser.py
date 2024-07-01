@@ -6,7 +6,7 @@ Script to update localization file
 execute only in StreamingAssets folder!
 """
 
-current_version = '1.5.51'
+current_version = '1.5.56' # FIXME todo: take version from game's files
 
 # check if right folder to run in
 if os.getcwd().split('\\')[-1] != 'StreamingAssets':
@@ -28,7 +28,7 @@ newStringsAdded = False
 # parse folder and subfolders
 for folder in os.walk(os.path.join(os.getcwd())):
     # filer non xlsx files
-    tables = [x for x in folder[2] if x.startswith('Localization_')]
+    tables = [x for x in folder[2] if x.startswith('Localization_') and x.endswith('.xlsx')]
     path = folder[0]
     # for each file
     for t in tables:
