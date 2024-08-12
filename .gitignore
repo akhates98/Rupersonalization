@@ -5,9 +5,14 @@ Voice/
 *.wav
 UnityServicesProjectConfiguration.json
 *.tmp
+ExportItems_None.csv
+LanguageModels/
 # and all .xlsx except ru one
 *.xlsx
 !Localization_ru.xlsx
 # and some other files 
 localization_backup.json
 Uploader
+UploaderBackup
+temp.py
+temp.json
