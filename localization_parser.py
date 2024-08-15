@@ -6,7 +6,7 @@ Script to update localization file
 execute only in StreamingAssets folder!
 """
 
-current_version = '2.0.6' # FIXME todo: take version from game's files
+current_version = '2.0.11' # FIXME todo: take version from game's files
 
 # check if right folder to run in
 if os.getcwd().split('\\')[-1] != 'StreamingAssets':
